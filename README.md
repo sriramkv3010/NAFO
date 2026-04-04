@@ -295,9 +295,7 @@ Deterministic X2 handoff for Hospital D at round 15 per 3GPP TS 36.423. SINR col
 
 ### 4. Age of Information (Novel Metric)
 
-First application of AoI to federated learning. $$
-\text{AoI}_i(t) = t - t_{\text{last admitted},i}
-$$. NAFO's quality weighting naturally penalises high-AoI hospitals whose information is stale.
+First application of AoI to federated learning. NAFO's quality weighting naturally penalises high-AoI hospitals whose information is stale.
 
 ### 5. Modality-Adaptive DP Clipping
 
