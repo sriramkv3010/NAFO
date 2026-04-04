@@ -66,28 +66,28 @@ NAFO achieves **86.14% global cardiac risk accuracy** — beating FedAvg (85.56%
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                          NAFO System Architecture                           │
-├─────────────────────┬───────────────────┬────────────────────┬─────────────┤
-│  Hospital A          │  Hospital B        │  Hospital C         │  Hospital D  │
-│  Tabular EHR         │  ECG Signal        │  Chest X-Ray        │  PPG Wearable│
-│  MLP 13→64           │  1D CNN →64        │  2D CNN →64         │  1D CNN →64  │
+┌──────────────────────────────────────────────────────────────────────────--─-──-┐
+│                          NAFO System Architecture                               │
+├─────────────────────┬───────────────────┬────────────────────┬─────────────-----┤
+│  Hospital A          │  Hospital B        │  Hospital C         │  Hospital D   │
+│  Tabular EHR         │  ECG Signal        │  Chest X-Ray        │  PPG Wearable │
+│  MLP 13→64           │  1D CNN →64        │  2D CNN →64         │  1D CNN →64   │
 │  mMTC | LTE-M        │  URLLC | 20MHz     │  eMBB | 100MHz      │  URLLC | 20MHz│
-│  ←── ENCODER STAYS LOCAL ──→                                              │
-├─────────────────────┴───────────────────┴────────────────────┴─────────────┤
-│                                                                             │
-│   [5G Digital Twin — 3GPP TR 38.901 V17.0.0]                               │
-│                                                                             │
-│   SINR ─→ Shannon Capacity ─→ Admission Decision ─→ NAFO Aggregation      │
-│                    ↓                    ↓                   ↓               │
-│              k = f(SINR, ε)      Drop on QoS fail     α_i = temporal      │
-│            [Synergy 1+3]         [Synergy 2]           smoothing           │
-│                                                                             │
-├─────────────────────────────────────────────────────────────────────────────┤
-│              SHARED CLASSIFIER HEAD  (64 → 32 → 1)                        │
-│                    ← ONLY THIS IS FEDERATED →                              │
-│              2,113 parameters transmitted per round                        │
-└─────────────────────────────────────────────────────────────────────────────┘
+│  ←── ENCODER STAYS LOCAL ──→                                                    │
+├─────────────────────┴───────────────────┴────────────────────┴─────────────-----┤
+│                                                                                 │
+│   [5G Digital Twin — 3GPP TR 38.901 V17.0.0]                                    │
+│                                                                                 │
+│   SINR ─→ Shannon Capacity ─→ Admission Decision ─→ NAFO Aggregation            │
+│                    ↓                    ↓                   ↓                   │
+│              k = f(SINR, ε)      Drop on QoS fail     α_i = temporal            │
+│            [Synergy 1+3]         [Synergy 2]           smoothing                │
+│                                                                                 │
+├─────────────────────────────────────────────────────────────────────────────----┤
+│              SHARED CLASSIFIER HEAD  (64 → 32 → 1)                              │
+│                    ← ONLY THIS IS FEDERATED →                                   │
+│              2,113 parameters transmitted per round                             │
+└─────────────────────────────────────────────────────────────────────────────----┘
 ```
 
 **Key design principle:** Encoders stay local. Only the `SharedClassifierHead` (2,113 parameters) is transmitted over the 5G network, ensuring raw patient data never leaves the hospital.
@@ -295,7 +295,9 @@ Deterministic X2 handoff for Hospital D at round 15 per 3GPP TS 36.423. SINR col
 
 ### 4. Age of Information (Novel Metric)
 
-First application of AoI to federated learning. $\text{AoI}_i(t) = t - t_{\text{last admitted}_i}$. NAFO's quality weighting naturally penalises high-AoI hospitals whose information is stale.
+First application of AoI to federated learning. $$
+\text{AoI}_i(t) = t - t_{\text{last admitted},i}
+$$. NAFO's quality weighting naturally penalises high-AoI hospitals whose information is stale.
 
 ### 5. Modality-Adaptive DP Clipping
 
