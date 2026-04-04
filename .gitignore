@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual env
+.venv/
+fl_env/
+
+# Logs / models
+logs/
+*.pt
+
+# OS / editor
+.DS_Store
+.vscode/
+
+# Data (optional if large)
+data/
+channel_traces/
+figures/
