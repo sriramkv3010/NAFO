@@ -19,4 +19,5 @@ logs/
 # Data (optional if large)
 data/
 channel_traces/
-figures/
+# keep figures (results)
+# figures/
